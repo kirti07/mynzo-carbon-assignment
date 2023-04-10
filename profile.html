@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+</head>
+<body>
+    <h1>My Profile</h1>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    <p><strong>City:</strong> {{ user.city }}</p>
+    <p><strong>State:</strong> {{ user.state }}</p>
+    <p><strong>Country:</strong> {{ user.country }}</p>
+    {% if user.photo %}
+    <img src="{{ user.photo }}" alt="Profile Photo">
+    {% endif %}
+</body>
+</html>
