@@ -3,6 +3,7 @@ import logging
 import math
 import os
 import json
+from validate_email import validate_email
 from flask import Flask, request, jsonify, make_response,render_template
 from pymongo import MongoClient
 
@@ -37,7 +38,7 @@ class UserDetail:
         state = request.json.get('State')
         country = request.json.get('Country')
         photo = request.files.get('Photo')
-        photo_fileName = None
+        photo_filename = None
         if photo and photo.content_length < 50 * 1024 * 1024:
             photo_filename = photo.filename
             photo.save('Some Storage')
@@ -69,10 +70,9 @@ class UserDetail:
             self.state=state
             self.country=country
         photo = request.files.get('Photo')
-        photo_filename = None
         if photo and photo.content_length < 50 * 1024 *1024:
-            photo_filename = photo.filename
-            photo.save('Some Storage')    
+            photo.save('Some Storage')
+            self.photo = photo.filename    
     def is_valid_schema(self,city,state,country):
         """ Verify the city and state provided by the user is correct
         """
@@ -105,11 +105,10 @@ def send_otp():
     4. if signup - create user profile in the db
     5. prints otp. 
     """
-    # users = get_table_details()
     email = request.json.get('email')
-    """
-    TODO: verify if email is valid
-    """
+    if not validate_email(email):
+        return make_response(jsonify({'message':'Invalid Email'}), 403)
+
     otp = generate_otp()
     if users.count_documents({"email":email}) <= 0:
         print("Welcome to our App, please create your user profile")
@@ -145,7 +144,6 @@ def view_profile():
      if created then the user information will be rendered in the format displayed in profile.html
     """
     email = request.args.get('email')
-    # users = get_table_details()
     user = users.find_one({'email':email})
     if not user:
         return jsonify({'error':'User not found'}, 404)
