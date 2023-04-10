@@ -37,13 +37,17 @@ class UserDetail:
         state = request.json.get('State')
         country = request.json.get('Country')
         photo = request.files.get('Photo')
+        photo_fileName = None
+        if photo and photo.content_length < 50 * 1024 * 1024:
+            photo_filename = photo.filename
+            photo.save('Some Storage')
         if self.is_valid_schema(city, state, country):
             self.first_name = first_name
             self.last_name = last_name
             self.city = city
             self.state = state
             self.country= country
-            self.photo = 'https://someCloudStorage.com/photo.jpg'
+            self.photo = photo_filename
         else:
             return jsonify({'error':'Invalid City, State or Country'}, 400)
 
@@ -65,9 +69,10 @@ class UserDetail:
             self.state=state
             self.country=country
         photo = request.files.get('Photo')
-        if photo is not None:
-            self.photo = 'htpps://someCloudStorage.com/photo.jpg'
-    
+        photo_filename = None
+        if photo and photo.content_length < 50 * 1024 *1024:
+            photo_filename = photo.filename
+            photo.save('Some Storage')    
     def is_valid_schema(self,city,state,country):
         """ Verify the city and state provided by the user is correct
         """
