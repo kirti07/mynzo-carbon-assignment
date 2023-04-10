@@ -18,7 +18,7 @@ class UserDetail:
     User model for information pertainig to a user
 
     """
-    def __init__(self,email=None):
+    def __init__(self,email):
         self.email = email
         self.first_name = ""
         self.last_name = ""
@@ -48,7 +48,7 @@ class UserDetail:
             return jsonify({'error':'Invalid City, State or Country'}, 400)
 
     def update_user_profile(self):
-        """Updates information which are not emptuy
+        """Updates information which are not empty
         """
         first_name = request.json.get('firstName')
         last_name = request.json.get('lastName')
@@ -102,6 +102,9 @@ def send_otp():
     """
     # users = get_table_details()
     email = request.json.get('email')
+    """
+    TODO: verify if email is valid
+    """
     otp = generate_otp()
     if users.count_documents({"email":email}) <= 0:
         print("Welcome to our App, please create your user profile")
