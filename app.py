@@ -145,9 +145,3 @@ def view_profile():
     if not user:
         return jsonify({'error':'User not found'}, 404)
     return render_template('profile.html',user=user)
-
-
-
-
-
-
