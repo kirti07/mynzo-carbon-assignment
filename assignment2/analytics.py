@@ -16,7 +16,7 @@ df['event'].value_counts()
 
 
 # %%
-# df = df.sort_values('timestamp',ascending=True)
+df = df.sort_values('timestamp',ascending=True)
 df.head()
 
 # %%
